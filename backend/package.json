@@ -7,14 +7,23 @@
   "scripts": {
     "start:dev": "node --env-file=.env.local dist/index.js",
     "dev": "tsx watch --env-file=.env.local src/index.ts",
+    "migrate:dev": "dotenvx run --env-file=.env.local -- prisma migrate dev",
+    "seed:dev": "dotenvx run --env-file=.env.local -- prisma db seed",
     "build": "tsc"
   },
+  "prisma": {
+    "seed": "ts-node --transpile-only ./prisma/seeds/index.ts"
+  },
   "dependencies": {
+    "@prisma/client": "^5.21.1",
     "express": "^4.21.1"
   },
   "devDependencies": {
+    "@dotenvx/dotenvx": "^0.38.0",
     "@types/express": "^5.0.0",
-    "@types/node": "^20.11.24",
+    "@types/node": "^20.16.13",
+    "prisma": "^5.21.1",
+    "ts-node": "^10.9.2",
     "tsx": "^4.11.0",
     "typescript": "^5.4.2"
   }
