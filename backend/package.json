@@ -1,0 +1,21 @@
+{
+  "name": "brain-ag-challenge",
+  "version": "0.0.1",
+  "main": "dist/index.js",
+  "author": "Gabriel Gomes Barbosa",
+  "license": "ISC",
+  "scripts": {
+    "start:dev": "node --env-file=.env.local dist/index.js",
+    "dev": "tsx watch --env-file=.env.local src/index.ts",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "express": "^4.21.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^20.11.24",
+    "tsx": "^4.11.0",
+    "typescript": "^5.4.2"
+  }
+}
