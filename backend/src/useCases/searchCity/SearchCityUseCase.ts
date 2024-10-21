@@ -1,15 +1,5 @@
+import { SearchCityDTO } from './SearchCityDTO'
 import { ICityRepository } from '../../repositories/city/ICityRepository'
-
-const allowedFields = [
-  'id',
-  'name',
-  'stateId',
-  'ibge',
-  'latLong',
-  'latitude',
-  'longitude',
-  'tomCode',
-]
 
 export class SearchCityUseCase {
   private cityRepository: ICityRepository
@@ -18,29 +8,15 @@ export class SearchCityUseCase {
     this.cityRepository = cityRepository
   }
 
-  async execute(searchTerm: string, fields?: string) {
+  async execute(searchTerm: string) {
     if (searchTerm.length < 3) {
       throw new Error('Search term must be at least 3 characters long.')
     }
 
-    let selectedFields = fields
-      ?.split(',')
-      .filter((field) => !!field)
-      .map((field) => field.trim()) || []
+    const cities = await this.cityRepository.findByName(searchTerm)
 
-    const invalidFields = selectedFields?.filter(
-      (field) => !allowedFields.includes(field),
-    )
-
-    if (invalidFields && invalidFields.length > 0) {
-      throw new Error(`Invalid fields: ${invalidFields.join(', ')}`)
-    }
-
-    const select =
-      selectedFields.length > 0
-        ? selectedFields.reduce((acc, field) => ({ ...acc, [field]: true }), {})
-        : undefined
-
-    return this.cityRepository.findByName(searchTerm, select)
+    return cities.map((item) => {
+      return new SearchCityDTO(item.id, `${item.name} - ${item.state.acronym}`)
+    })
   }
 }

@@ -1,11 +1,6 @@
 import { Crop, Prisma } from '@prisma/client'
 
-export interface IPagination<T> {
-  data: T[]
-  totalPages: number
-  hasMore: boolean
-  currentPage: number
-}
+import { IPagination } from '../../interfaces/IPagination'
 
 export interface ICropRepository {
   filter(

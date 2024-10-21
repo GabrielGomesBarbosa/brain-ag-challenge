@@ -1,8 +1,5 @@
-import { City } from '@prisma/client'
+import { City } from '../../models/City'
 
 export interface ICityRepository {
-  findByName(
-    searchTerm: string,
-    fields?: Record<string, boolean>,
-  ): Promise<Partial<City>[]>
+  findByName(searchTerm: string): Promise<City[]>
 }

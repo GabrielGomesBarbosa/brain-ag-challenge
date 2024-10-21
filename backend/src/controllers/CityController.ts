@@ -14,14 +14,14 @@ export class CityController {
     req: Request<{}, {}, {}, SearchCityQueryParams>,
     res: Response,
   ) {
-    const { name, fields } = req.query
+    const { name } = req.query
 
     try {
       if (typeof name !== 'string') {
         return res.status(400).json({ error: 'Invalid search term' })
       }
 
-      const cities = await this.searchCityUseCase.execute(name, fields)
+      const cities = await this.searchCityUseCase.execute(name)
 
       return res.json(cities)
     } catch (error) {
