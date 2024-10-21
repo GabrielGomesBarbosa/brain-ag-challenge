@@ -1,7 +1,7 @@
 import { Crop, Prisma } from '@prisma/client';
 
 import prisma from '../../services/prisma';
-import { ICropRepository } from './ICropRepository';
+import { ICropRepository, IPagination } from './ICropRepository';
 
 export class CropRepository implements ICropRepository {
   
@@ -24,21 +24,34 @@ export class CropRepository implements ICropRepository {
     });
   }
 
-  async delete(id: string): Promise<Crop> {
-    return await prisma.crop.delete({
+  async delete(id: string): Promise<void> {
+    await prisma.crop.delete({
       where: { id },
     });
   }
 
   async filter(
-    where?: Prisma.CropWhereInput, 
-    skip?: number,
-    take?: number
-  ): Promise<Crop[]> {
-    return prisma.crop.findMany({
+    where?: Prisma.CropWhereInput,
+    page: number = 1,
+    size: number = 10
+  ): Promise<IPagination<Crop>> {
+    const skip = (page - 1) * size;
+    const totalCrops = await prisma.crop.count({ where });
+
+    const crops = await prisma.crop.findMany({
       where,
       skip,
-      take,
+      take: size,
     });
+
+    const totalPages = Math.ceil(totalCrops / size);
+    const hasMore = page < totalPages;
+
+    return {
+      data: crops,
+      totalPages,
+      hasMore,
+      currentPage: page,
+    };
   }
 }

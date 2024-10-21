@@ -1,6 +1,7 @@
-import { Crop } from '@prisma/client';
+import { Prisma, Crop } from '@prisma/client';
 
 import { generateSlug } from '../../utils/generateSlug';
+import { updateCropSchema } from '../../validations/CropValidation';
 import { ICropRepository } from '../../repositories/crop/ICropRepository';
 
 export class UpdateCropUseCase {
@@ -10,18 +11,18 @@ export class UpdateCropUseCase {
     this.cropRepository = cropRepository;
   }
 
-  async execute(id: string, name: string): Promise<Crop> {
-    if (!id) {
-      throw new Error('Crop ID is required.');
-    }
+  async execute(id: string, data: Prisma.CropUpdateInput): Promise<Crop> {
+    try {
+      const validatedData = updateCropSchema.parse(data);
 
-    if (!name || name.trim() === '') {
-      throw new Error('Crop name is required.');
-    }
+      const slug = generateSlug(validatedData.name);
 
-    return this.cropRepository.update(id, {
-      name,
-      slug: generateSlug(name)
-    });
+      return await this.cropRepository.update(id, {
+        ...validatedData,
+        slug
+      });
+    } catch (error) {
+      throw error
+    }
   }
 }

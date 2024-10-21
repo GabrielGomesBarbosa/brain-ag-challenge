@@ -1,6 +1,7 @@
-import { Crop } from '@prisma/client';
+import { Prisma, Crop } from '@prisma/client';
 
 import { generateSlug } from '../../utils/generateSlug';
+import { createCropSchema } from '../../validations/CropValidation'; // Updated validation schema
 import { ICropRepository } from '../../repositories/crop/ICropRepository';
 
 export class CreateCropUseCase {
@@ -10,14 +11,18 @@ export class CreateCropUseCase {
     this.cropRepository = cropRepository;
   }
 
-  async execute(name: string): Promise<Crop> {
-    if (!name || name.trim() === '') {
-      throw new Error('Crop name is required.');
-    }
+  async execute(data: Prisma.CropCreateInput): Promise<Crop> {
 
-    return this.cropRepository.create({
-      name,
-      slug: generateSlug(name)
-    });
+    try {
+      const validatedData = createCropSchema.parse(data);
+      const slug = generateSlug(validatedData.name);
+  
+      return await this.cropRepository.create({
+        name: validatedData.name,
+        slug
+      });
+    } catch (error) {
+      throw error;
+    }
   }
 }
