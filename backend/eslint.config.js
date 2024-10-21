@@ -1,27 +1,27 @@
-const eslintPluginPrettier = require("eslint-plugin-prettier");
-const eslintParserTypescript = require("@typescript-eslint/parser");
-const eslintPluginTypescript = require("@typescript-eslint/eslint-plugin");
+const eslintPluginPrettier = require("eslint-plugin-prettier")
+const eslintParserTypescript = require("@typescript-eslint/parser")
+const eslintPluginTypescript = require("@typescript-eslint/eslint-plugin")
 
 module.exports = [
   {
-    ignores: ["node_modules/", "dist/"], // Ignoring specific directories
+    ignores: ["node_modules/", "dist/"]
   },
   {
-    files: ["**/*.ts"], // Targeting TypeScript files
+    files: ["**/*.ts"],
     languageOptions: {
-      ecmaVersion: 2021, // ECMAScript version
-      parser: eslintParserTypescript, // Using TypeScript parser
-      sourceType: "module", // Setting module type
+      ecmaVersion: 2021,
+      parser: eslintParserTypescript,
+      sourceType: "module"
     },
     plugins: {
       "@typescript-eslint": eslintPluginTypescript,
-      prettier: eslintPluginPrettier,
+      prettier: eslintPluginPrettier
     },
     rules: {
-      "prettier/prettier": ["error", { semi: false }], // Prettier config: no semicolons
-      "no-console": "warn", // Warn on console logs
-      "@typescript-eslint/no-unused-vars": "error", // Error on unused variables
-      semi: ["error", "never"], // Disallow semicolons in general
-    },
-  },
+      "prettier/prettier": ["error", { semi: false }],
+      "no-console": "warn",
+      "@typescript-eslint/no-unused-vars": "error",
+      semi: ["error", "never"]
+    }
+  }
 ];
