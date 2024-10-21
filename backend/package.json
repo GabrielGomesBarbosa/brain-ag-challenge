@@ -1,6 +1,6 @@
 {
   "name": "brain-ag-challenge",
-  "version": "0.0.1",
+  "version": "0.3.0",
   "main": "dist/index.js",
   "author": "Gabriel Gomes Barbosa",
   "license": "ISC",
