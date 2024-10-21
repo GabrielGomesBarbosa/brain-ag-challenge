@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import prisma from '../../src/services/prisma'
 
 async function main() {
@@ -270,11 +271,11 @@ async function main() {
 
   const brazilCode = await prisma.country.findFirstOrThrow({
     where: {
-      acronym: 'BR'
+      acronym: 'BR',
     },
     select: {
-      id: true
-    }
+      id: true,
+    },
   })
 
   console.log('Start seeding states...')
@@ -314,11 +315,11 @@ async function main() {
   const stateList = await prisma.stateProvince.findMany({
     select: {
       id: true,
-      acronym: true
-    }
+      acronym: true,
+    },
   })
   const stateMap = new Map()
-  stateList.forEach(item => stateMap.set(item.acronym, item.id))
+  stateList.forEach((item) => stateMap.set(item.acronym, item.id))
   console.log('States map created successfully ✨')
 
   console.log('Start seeding cities... (It can take some while)')
@@ -5926,7 +5927,8 @@ main()
   .then(async () => {
     await prisma.$disconnect()
     console.log('Seed finish successfully ✨')
-  }).catch(async (e) => {
+  })
+  .catch(async (e) => {
     console.error(`${e.message} ❌`)
     await prisma.$disconnect()
     process.exit(1)

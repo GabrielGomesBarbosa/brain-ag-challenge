@@ -11,4 +11,5 @@ server.use(express.json())
 
 server.use(router)
 
+// eslint-disable-next-line no-console
 server.listen(PORT, () => console.log(`Server running on: ${HOST}:${PORT}`))

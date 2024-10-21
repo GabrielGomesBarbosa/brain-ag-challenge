@@ -8,6 +8,6 @@
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true
   },
-  "include": ["./src", "env.d.ts"],
+  "include": ["src/**/*.ts"],
   "exclude": ["./node_modules", "./dist", "./prisma"]
 }
