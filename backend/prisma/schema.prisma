@@ -47,14 +47,12 @@ model City {
 }
 
 model Crop {
-  id              String              @id @default(uuid())
-  name            String              @db.VarChar(100)
-  slug            String              @unique @db.VarChar(100)
-  createdAt       DateTime            @default(now())
-  updatedAt       DateTime            @updatedAt
-  producerCrops   RuralProducerCrop[]
-  ruralProducer   RuralProducer?      @relation(fields: [ruralProducerId], references: [id])
-  ruralProducerId String?
+  id            String              @id @default(uuid())
+  name          String              @db.VarChar(100)
+  slug          String              @unique @db.VarChar(100)
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+  producerCrops RuralProducerCrop[]
 }
 
 model RuralProducer {
@@ -67,8 +65,6 @@ model RuralProducer {
   totalArea         Float
   agriculturalArea  Float
   vegetationArea    Float
-  cropId            String?
-  crops             Crop[]
   createdAt         DateTime            @default(now())
   updatedAt         DateTime            @updatedAt
   ruralProducerCrop RuralProducerCrop[]

@@ -5919,6 +5919,78 @@ async function main() {
     ('${v4()}', 'Pescaria Brava',	'${stateMap.get('SC')}',	4212650,	'(-28.3966007232666016,-48.8863983154297017)',	-2.83966007232666E+17,	-4.88863983154297E+17,	0);
   `)
   console.log('Cities seed finish successfully ✨')
+
+  console.log('Start seeding crops...')
+  await prisma.crop.createMany({
+    data: [
+      {
+        id: v4(),
+        name: 'Soja',
+        slug: 'soja',
+      },
+      {
+        id: v4(),
+        name: 'Milho',
+        slug: 'milho',
+      },
+      {
+        id: v4(),
+        name: 'Cana de Açucar',
+        slug: 'cana-de-acucar',
+      },
+      {
+        id: v4(),
+        name: 'Café',
+        slug: 'cafe',
+      },
+      {
+        id: v4(),
+        name: 'Algodão',
+        slug: 'algodao',
+      },
+      {
+        id: v4(),
+        name: 'Arroz',
+        slug: 'arroz',
+      },
+      {
+        id: v4(),
+        name: 'Feijão',
+        slug: 'feijao',
+      },
+      {
+        id: v4(),
+        name: 'Trigo',
+        slug: 'trigo',
+      },
+      {
+        id: v4(),
+        name: 'Laranja',
+        slug: 'laranja',
+      },
+      {
+        id: v4(),
+        name: 'Banana',
+        slug: 'banana',
+      },
+      {
+        id: v4(),
+        name: 'Cacau',
+        slug: 'cacau',
+      },
+      {
+        id: v4(),
+        name: 'Mandioca',
+        slug: 'mandioca',
+      },
+      {
+        id: v4(),
+        name: 'Batata',
+        slug: 'batata',
+      },
+    ],
+  })
+  console.log('Crops seed finish successfully ✨')
 }
 
 main()
@@ -5929,5 +6001,5 @@ main()
   .catch(async (e) => {
     console.error(`${e.message} ❌`)
     await prisma.$disconnect()
-    // process.exit(1)
+    process.exit(1)
   })
