@@ -15,7 +15,7 @@ const searchCityUseCase = new SearchCityUseCase(cityRepository)
 const cityController = new CityController(searchCityUseCase)
 
 cityRoutes.get(
-  '/cities/search',
+  '/search',
   (req: Request<{}, {}, {}, SearchCityQueryParams>, res) => {
     cityController.searchCity(req, res)
   },
