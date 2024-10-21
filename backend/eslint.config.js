@@ -5,7 +5,6 @@ const eslintPluginTypescript = require("@typescript-eslint/eslint-plugin")
 module.exports = [
   {
     ignores: ["node_modules/", "dist/", "*/**.spec.ts"],
-    ignorePatterns: ['*.spec.ts', '*.test.ts']
   },
   {
     files: ["**/*.ts"],

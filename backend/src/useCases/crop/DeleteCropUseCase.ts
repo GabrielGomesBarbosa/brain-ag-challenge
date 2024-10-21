@@ -1,19 +1,17 @@
-import { Crop } from '@prisma/client';
-
-import { ICropRepository } from '../../repositories/crop/ICropRepository';
+import { ICropRepository } from '../../repositories/crop/ICropRepository'
 
 export class DeleteCropUseCase {
-  private cropRepository: ICropRepository;
+  private cropRepository: ICropRepository
 
   constructor(cropRepository: ICropRepository) {
-    this.cropRepository = cropRepository;
+    this.cropRepository = cropRepository
   }
 
-  async execute(id: string): Promise<Crop> {
+  async execute(id: string): Promise<void> {
     if (!id) {
-      throw new Error('Crop ID is required.');
+      throw new Error('Crop ID is required.')
     }
 
-    return this.cropRepository.delete(id);
+    this.cropRepository.delete(id)
   }
 }
