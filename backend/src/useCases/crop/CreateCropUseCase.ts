@@ -1,7 +1,7 @@
 import { Prisma, Crop } from '@prisma/client'
 
 import { generateSlug } from '../../utils/generateSlug'
-import { createCropSchema } from '../../validations/CropValidation' // Updated validation schema
+import { createCropSchema } from '../../validations/CropValidation'
 import { ICropRepository } from '../../repositories/crop/ICropRepository'
 
 export class CreateCropUseCase {

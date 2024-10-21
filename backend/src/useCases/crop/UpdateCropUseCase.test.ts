@@ -52,11 +52,11 @@ describe('UpdateCropUseCase', () => {
       ruralProducerId: null,
     })
 
-    expect(mockCropRepository.findById).toHaveBeenCalledTimes(1) // Ensure findById is called
+    expect(mockCropRepository.findById).toHaveBeenCalledTimes(1)
     expect(mockCropRepository.findById).toHaveBeenCalledWith(cropId)
     expect(mockCropRepository.update).toHaveBeenCalledWith(cropId, {
       ...input,
-      slug: 'updated-wheat', // Expected slug after slug generation
+      slug: 'updated-wheat',
     })
   })
 
@@ -70,7 +70,7 @@ describe('UpdateCropUseCase', () => {
       'Record not found',
     )
     expect(mockCropRepository.findById).toHaveBeenCalledWith(cropId)
-    expect(mockCropRepository.update).not.toHaveBeenCalled() // Ensure update is not called
+    expect(mockCropRepository.update).not.toHaveBeenCalled()
   })
 
   it('should throw validation error when input is invalid', async () => {
