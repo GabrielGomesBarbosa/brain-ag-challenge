@@ -1,5 +1,5 @@
 import { SearchCityUseCase } from './SearchCityUseCase'
-import { ICityRepository } from '../../repositories/ICityRepository'
+import { ICityRepository } from '../../repositories/city/ICityRepository'
 
 describe('SearchCityUseCase', () => {
   let searchCityUseCase: SearchCityUseCase;

@@ -1,4 +1,4 @@
-import { ICityRepository } from '../../repositories/ICityRepository'
+import { ICityRepository } from '../../repositories/city/ICityRepository'
 
 const allowedFields = [
   'id',

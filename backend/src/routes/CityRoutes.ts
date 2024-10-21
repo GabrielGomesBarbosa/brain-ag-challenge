@@ -4,7 +4,7 @@ import {
   CityController,
   SearchCityQueryParams,
 } from '../controllers/CityController'
-import { CityRepository } from '../repositories/CityRepository'
+import { CityRepository } from '../repositories/city/CityRepository'
 import { SearchCityUseCase } from '../useCases/searchCity/SearchCityUseCase'
 
 const cityRoutes = Router()

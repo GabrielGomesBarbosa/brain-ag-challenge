@@ -30,17 +30,59 @@ model State {
   countryId String
   ddd       String  @db.VarChar(255)
   country   Country @relation(fields: [countryId], references: [id])
-  City      City[]
+  city      City[]
 }
 
 model City {
-  id        String @id @default(uuid())
-  name      String @db.VarChar(150)
-  stateId   String
-  state     State  @relation(fields: [stateId], references: [id])
-  ibge      String @db.VarChar(10)
-  latLong   String @db.VarChar(255)
-  latitude  Float
-  longitude Float
-  tomCode   Int
+  id            String          @id @default(uuid())
+  name          String          @db.VarChar(150)
+  stateId       String
+  state         State           @relation(fields: [stateId], references: [id])
+  ibge          String          @db.VarChar(10)
+  latLong       String          @db.VarChar(255)
+  latitude      Float
+  longitude     Float
+  tomCode       Int
+  ruralProducer RuralProducer[]
+}
+
+model Crop {
+  id              String              @id @default(uuid())
+  name            String              @db.VarChar(100)
+  slug            String              @unique @db.VarChar(100)
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+  producerCrops   RuralProducerCrop[]
+  ruralProducer   RuralProducer?      @relation(fields: [ruralProducerId], references: [id])
+  ruralProducerId String?
+}
+
+model RuralProducer {
+  id                String              @id @default(uuid())
+  cpfCnpj           String              @unique
+  name              String              @db.VarChar(255)
+  farmName          String              @db.VarChar(500)
+  city              City                @relation(fields: [cityId], references: [id])
+  cityId            String
+  totalArea         Float
+  agriculturalArea  Float
+  vegetationArea    Float
+  cropId            String?
+  crops             Crop[]
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  ruralProducerCrop RuralProducerCrop[]
+}
+
+model RuralProducerCrop {
+  id              String        @id @default(uuid())
+  ruralProducerId String
+  ruralProducer   RuralProducer @relation(fields: [ruralProducerId], references: [id])
+  crop            Crop          @relation(fields: [cropId], references: [id])
+  cropId          String
+  totalArea       Float
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@unique([ruralProducerId, cropId])
 }
