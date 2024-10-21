@@ -1,22 +1,22 @@
 {
   "name": "brain-ag-challenge",
   "version": "0.0.1",
-  "type": "module",
   "main": "dist/index.js",
   "author": "Gabriel Gomes Barbosa",
   "license": "ISC",
   "scripts": {
     "start:dev": "node --env-file=.env.local dist/index.js",
     "dev": "tsx watch --env-file=.env.local src/index.ts",
+    "prisma:generate": "prisma generate",
     "migrate:dev": "dotenvx run --env-file=.env.local -- prisma migrate dev",
     "seed:dev": "dotenvx run --env-file=.env.local -- prisma db seed",
     "build": "tsc",
-    "lint": "eslint . --ext .ts",
-    "lint:fix": "eslint . --ext .ts --fix",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "format": "prettier --write ."
   },
   "prisma": {
-    "seed": "ts-node --transpile-only ./prisma/seeds/index.ts"
+    "seed": "ts-node --transpile-only ./prisma/seeds/index"
   },
   "dependencies": {
     "@prisma/client": "^5.21.1",

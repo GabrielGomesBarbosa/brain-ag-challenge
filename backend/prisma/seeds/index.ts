@@ -280,7 +280,7 @@ async function main() {
 
   console.log('Start seeding states...')
   await prisma.$executeRawUnsafe(`
-    INSERT INTO "StateProvince" ("id", "name", "acronym", "ibge", "countryId", "ddd") VALUES
+    INSERT INTO "State" ("id", "name", "acronym", "ibge", "countryId", "ddd") VALUES
     (uuid_generate_v4(), 'Acre', 'AC', 12, '${brazilCode.id}', '[68]'),
     (uuid_generate_v4(), 'Alagoas', 'AL', 27, '${brazilCode.id}', '[82]'),
     (uuid_generate_v4(), 'Amazonas', 'AM', 13, '${brazilCode.id}', '[97,92]'),
@@ -312,7 +312,7 @@ async function main() {
   console.log('States seed finish successfully ✨')
 
   console.log('Get city list from database...')
-  const stateList = await prisma.stateProvince.findMany({
+  const stateList = await prisma.state.findMany({
     select: {
       id: true,
       acronym: true,
@@ -5931,5 +5931,5 @@ main()
   .catch(async (e) => {
     console.error(`${e.message} ❌`)
     await prisma.$disconnect()
-    process.exit(1)
+    // process.exit(1)
   })

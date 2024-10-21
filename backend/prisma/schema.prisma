@@ -14,15 +14,15 @@ datasource db {
 }
 
 model Country {
-  id        String          @id @default(uuid())
-  name      String          @db.VarChar(100)
-  namePt    String          @db.VarChar(100)
-  acronym   String?         @db.VarChar(2)
+  id        String  @id @default(uuid())
+  name      String  @db.VarChar(100)
+  namePt    String  @db.VarChar(100)
+  acronym   String? @db.VarChar(2)
   bacenCode Int
-  state     StateProvince[]
+  state     State[]
 }
 
-model StateProvince {
+model State {
   id        String  @id @default(uuid())
   name      String  @db.VarChar(100)
   acronym   String  @db.VarChar(2)
@@ -34,12 +34,12 @@ model StateProvince {
 }
 
 model City {
-  id        String        @id @default(uuid())
-  name      String        @db.VarChar(150)
+  id        String @id @default(uuid())
+  name      String @db.VarChar(150)
   stateId   String
-  state     StateProvince @relation(fields: [stateId], references: [id])
-  ibge      String        @db.VarChar(10)
-  latLong   String        @db.VarChar(255)
+  state     State  @relation(fields: [stateId], references: [id])
+  ibge      String @db.VarChar(10)
+  latLong   String @db.VarChar(255)
   latitude  Float
   longitude Float
   tomCode   Int

@@ -10,7 +10,7 @@ CREATE TABLE "Country" (
 );
 
 -- CreateTable
-CREATE TABLE "StateProvince" (
+CREATE TABLE "State" (
     "id" TEXT NOT NULL,
     "name" VARCHAR(100) NOT NULL,
     "acronym" VARCHAR(2) NOT NULL,
@@ -18,7 +18,7 @@ CREATE TABLE "StateProvince" (
     "countryId" TEXT NOT NULL,
     "ddd" VARCHAR(255) NOT NULL,
 
-    CONSTRAINT "StateProvince_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "State_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -36,7 +36,7 @@ CREATE TABLE "City" (
 );
 
 -- AddForeignKey
-ALTER TABLE "StateProvince" ADD CONSTRAINT "StateProvince_countryId_fkey" FOREIGN KEY ("countryId") REFERENCES "Country"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "State" ADD CONSTRAINT "State_countryId_fkey" FOREIGN KEY ("countryId") REFERENCES "Country"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "City" ADD CONSTRAINT "City_stateId_fkey" FOREIGN KEY ("stateId") REFERENCES "StateProvince"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "City" ADD CONSTRAINT "City_stateId_fkey" FOREIGN KEY ("stateId") REFERENCES "State"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
