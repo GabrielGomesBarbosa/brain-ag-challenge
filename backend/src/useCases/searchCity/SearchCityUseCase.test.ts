@@ -2,8 +2,8 @@ import { SearchCityUseCase } from './SearchCityUseCase'
 import { ICityRepository } from '../../repositories/ICityRepository'
 
 describe('SearchCityUseCase', () => {
-  let searchCityUseCase: SearchCityUseCase
-  let mockCityRepository: jest.Mocked<ICityRepository>
+  let searchCityUseCase: SearchCityUseCase;
+  let mockCityRepository: jest.Mocked<ICityRepository>;
 
   beforeEach(() => {
     mockCityRepository = {
@@ -24,11 +24,11 @@ describe('SearchCityUseCase', () => {
   it('should call the repository with the correct search term and no fields', async () => {
     mockCityRepository.findByName.mockResolvedValue([])
 
-    await searchCityUseCase.execute('Afonso', 'id, name')
+    await searchCityUseCase.execute('Afonso', undefined)
 
     expect(mockCityRepository.findByName).toHaveBeenCalledWith(
       'Afonso',
-      undefined,
+      undefined
     )
   })
 
@@ -40,7 +40,9 @@ describe('SearchCityUseCase', () => {
     const fields = 'name, ibge'
     const result = await searchCityUseCase.execute('Afonso', fields)
 
-    expect(mockCityRepository.findByName).toHaveBeenCalledWith('Afonso', fields)
+    expect(mockCityRepository.findByName).toHaveBeenCalledWith('Afonso', 
+      { name: true, ibge: true }
+    )
 
     expect(result).toEqual([{ name: 'Afonso Cláudio', ibge: '3200102' }])
   })
@@ -54,10 +56,7 @@ describe('SearchCityUseCase', () => {
 
     const result = await searchCityUseCase.execute('Afonso', 'name, ibge')
 
-    expect(mockCityRepository.findByName).toHaveBeenCalledWith('Afonso', [
-      'name',
-      'ibge',
-    ])
+    expect(mockCityRepository.findByName).toHaveBeenCalledWith('Afonso', { name: true, ibge: true })
 
     expect(result).toEqual(mockCities)
   })

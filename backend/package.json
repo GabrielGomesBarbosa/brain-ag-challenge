@@ -11,6 +11,7 @@
     "migrate:dev": "dotenvx run --env-file=.env.local -- prisma migrate dev",
     "seed:dev": "dotenvx run --env-file=.env.local -- prisma db seed",
     "build": "tsc",
+    "test": "jest",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write ."

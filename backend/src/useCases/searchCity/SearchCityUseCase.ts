@@ -18,7 +18,7 @@ export class SearchCityUseCase {
     this.cityRepository = cityRepository
   }
 
-  async execute(searchTerm: string, fields: string) {
+  async execute(searchTerm: string, fields?: string) {
     if (searchTerm.length < 3) {
       throw new Error('Search term must be at least 3 characters long.')
     }
@@ -26,7 +26,7 @@ export class SearchCityUseCase {
     let selectedFields = fields
       ?.split(',')
       .filter((field) => !!field)
-      .map((field) => field.trim())
+      .map((field) => field.trim()) || []
 
     const invalidFields = selectedFields?.filter(
       (field) => !allowedFields.includes(field),
