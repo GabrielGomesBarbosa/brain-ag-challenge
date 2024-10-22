@@ -1,9 +1,12 @@
+import { v4 } from 'uuid'
+
+import { SearchCityDTO } from './SearchCityDTO'
 import { SearchCityUseCase } from './SearchCityUseCase'
 import { ICityRepository } from '../../repositories/city/ICityRepository'
 
 describe('SearchCityUseCase', () => {
-  let searchCityUseCase: SearchCityUseCase;
-  let mockCityRepository: jest.Mocked<ICityRepository>;
+  let searchCityUseCase: SearchCityUseCase
+  let mockCityRepository: jest.Mocked<ICityRepository>
 
   beforeEach(() => {
     mockCityRepository = {
@@ -14,50 +17,90 @@ describe('SearchCityUseCase', () => {
   })
 
   it('should throw an error if the search term is less than 3 characters', async () => {
-    await expect(searchCityUseCase.execute('Af', 'id, name')).rejects.toThrow(
+    await expect(searchCityUseCase.execute('Af')).rejects.toThrow(
       'Search term must be at least 3 characters long.',
     )
 
     expect(mockCityRepository.findByName).not.toHaveBeenCalled()
   })
 
-  it('should call the repository with the correct search term and no fields', async () => {
-    mockCityRepository.findByName.mockResolvedValue([])
+  it('should call the repository with the correct search term', async () => {
+    const cityId = v4()
 
-    await searchCityUseCase.execute('Afonso', undefined)
-
-    expect(mockCityRepository.findByName).toHaveBeenCalledWith(
-      'Afonso',
-      undefined
-    )
-  })
-
-  it('should call the repository with the correct search term and fields', async () => {
     mockCityRepository.findByName.mockResolvedValue([
-      { name: 'Afonso Cláudio', ibge: '3200102' },
+      {
+        id: cityId,
+        name: 'Afonso Cláudio',
+        ibge: '3200102',
+        latLong: '123,456',
+        latitude: 12.3456,
+        longitude: 65.4321,
+        tomCode: 123,
+        state: {
+          id: 'state-uuid',
+          name: 'Espírito Santo',
+          acronym: 'ES',
+          ibge: '3200000',
+          ddd: '27',
+        },
+      },
     ])
 
-    const fields = 'name, ibge'
-    const result = await searchCityUseCase.execute('Afonso', fields)
+    const result = await searchCityUseCase.execute('Afonso')
 
-    expect(mockCityRepository.findByName).toHaveBeenCalledWith('Afonso', 
-      { name: true, ibge: true }
-    )
-
-    expect(result).toEqual([{ name: 'Afonso Cláudio', ibge: '3200102' }])
+    expect(result[0].id).toEqual(cityId)
+    expect(result[0].name).toEqual('Afonso Cláudio - ES')
   })
 
   it('should return the correct result when repository resolves with cities', async () => {
     const mockCities = [
-      { name: 'Afonso Cláudio', ibge: '3200102' },
-      { name: 'Água Doce do Norte', ibge: '3200169' },
+      {
+        id: 'city-uuid-1',
+        name: 'Afonso Cláudio',
+        ibge: '3200102',
+        latLong: '123,456',
+        latitude: 12.3456,
+        longitude: 65.4321,
+        tomCode: 123,
+        state: {
+          id: 'state-uuid-1',
+          name: 'Espírito Santo',
+          acronym: 'ES',
+          ibge: '3200000',
+          ddd: '27',
+        },
+      },
+      {
+        id: 'city-uuid-2',
+        name: 'Água Doce do Norte',
+        ibge: '3200169',
+        latLong: '123,456',
+        latitude: 12.3456,
+        longitude: 65.4321,
+        tomCode: 123,
+        state: {
+          id: 'state-uuid-2',
+          name: 'Espírito Santo',
+          acronym: 'ES',
+          ibge: '3200000',
+          ddd: '27',
+        },
+      },
     ]
+
+    // Mock the repository to resolve with the mock cities
     mockCityRepository.findByName.mockResolvedValue(mockCities)
 
-    const result = await searchCityUseCase.execute('Afonso', 'name, ibge')
+    // Execute the use case
+    const result = await searchCityUseCase.execute('Afonso')
 
-    expect(mockCityRepository.findByName).toHaveBeenCalledWith('Afonso', { name: true, ibge: true })
+    // Ensure the repository is called with the correct parameters
+    expect(mockCityRepository.findByName).toHaveBeenCalledWith('Afonso')
 
-    expect(result).toEqual(mockCities)
+    // Expected result based on SearchCityDTO mapping
+    expect(result).toEqual([
+      new SearchCityDTO('city-uuid-1', 'Afonso Cláudio - ES'),
+      new SearchCityDTO('city-uuid-2', 'Água Doce do Norte - ES'),
+    ])
   })
 })

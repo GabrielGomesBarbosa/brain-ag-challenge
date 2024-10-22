@@ -1,10 +1,8 @@
 import { Crop, Prisma } from '@prisma/client'
 
-import {
-  IPagination,
-  ICropRepository,
-} from '../../repositories/crop/ICropRepository'
 import { FilterCropsUseCase } from './FilterCropsUseCase'
+import { IPagination } from '../../interfaces/IPagination'
+import { ICropRepository } from '../../repositories/crop/ICropRepository'
 
 describe('FilterCropsUseCase', () => {
   let filterCropsUseCase: FilterCropsUseCase
@@ -31,7 +29,6 @@ describe('FilterCropsUseCase', () => {
         slug: 'wheat',
         createdAt: new Date('2024-10-21'),
         updatedAt: new Date('2024-10-21'),
-        ruralProducerId: null,
       },
     ]
 
@@ -63,7 +60,6 @@ describe('FilterCropsUseCase', () => {
         slug: 'wheat',
         createdAt: new Date('2024-10-21'),
         updatedAt: new Date('2024-10-21'),
-        ruralProducerId: null,
       },
       {
         id: 'crop-id-2',
@@ -71,7 +67,6 @@ describe('FilterCropsUseCase', () => {
         slug: 'corn',
         createdAt: new Date('2024-10-21'),
         updatedAt: new Date('2024-10-21'),
-        ruralProducerId: null,
       },
     ]
 

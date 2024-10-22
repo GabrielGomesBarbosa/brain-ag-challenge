@@ -1,6 +1,6 @@
 {
   "name": "brain-ag-challenge",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "main": "dist/index.js",
   "author": "Gabriel Gomes Barbosa",
   "license": "ISC",
@@ -10,7 +10,7 @@
     "prisma:generate": "prisma generate",
     "migrate:dev": "dotenvx run --env-file=.env.local -- prisma migrate dev",
     "seed:dev": "dotenvx run --env-file=.env.local -- prisma db seed",
-    "build": "tsc",
+    "build": "tsc -p tsconfig.build.json",
     "test": "jest",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",

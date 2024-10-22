@@ -1,9 +1,7 @@
 import { Crop, Prisma } from '@prisma/client'
 
-import {
-  IPagination,
-  ICropRepository,
-} from '../../repositories/crop/ICropRepository'
+import { IPagination } from '../../interfaces/IPagination'
+import { ICropRepository } from '../../repositories/crop/ICropRepository'
 
 export class FilterCropsUseCase {
   private cropRepository: ICropRepository

@@ -29,7 +29,6 @@ describe('UpdateCropUseCase', () => {
       slug: 'wheat',
       createdAt: new Date('2024-10-21'),
       updatedAt: new Date('2024-10-21'),
-      ruralProducerId: null,
     })
 
     mockCropRepository.update.mockResolvedValue({
@@ -38,7 +37,6 @@ describe('UpdateCropUseCase', () => {
       slug: 'wheat',
       createdAt: new Date('2024-10-21'),
       updatedAt: new Date('2024-10-21'),
-      ruralProducerId: null,
     })
 
     const result = await updateCropUseCase.execute(cropId, input)
@@ -49,7 +47,6 @@ describe('UpdateCropUseCase', () => {
       slug: 'wheat',
       createdAt: new Date('2024-10-21'),
       updatedAt: new Date('2024-10-21'),
-      ruralProducerId: null,
     })
 
     expect(mockCropRepository.findById).toHaveBeenCalledTimes(1)
@@ -83,7 +80,6 @@ describe('UpdateCropUseCase', () => {
       slug: 'wheat',
       createdAt: new Date('2024-10-21'),
       updatedAt: new Date('2024-10-21'),
-      ruralProducerId: null,
     })
 
     await expect(

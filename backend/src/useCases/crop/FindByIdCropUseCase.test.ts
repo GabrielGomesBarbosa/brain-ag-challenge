@@ -27,7 +27,6 @@ describe('FindByIdCropUseCase', () => {
       slug: 'wheat',
       createdAt: new Date('2024-10-21'),
       updatedAt: new Date('2024-10-21'),
-      ruralProducerId: null,
     }
 
     mockCropRepository.findById.mockResolvedValue(cropData)
