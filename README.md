@@ -1,4 +1,4 @@
-# AG Brain - Challenge
+# Test - Challenge
 ----
 
 ## Backend
@@ -17,8 +17,8 @@ Ensure you have the following software installed on your machine:
 #### 1. Clone the repository
 
 ```bash
-git clone https://github.com/GabrielGomesBarbosa/brain-ag-challenge
-cd brain-ag-challenge
+git clone https://github.com/GabrielGomesBarbosa/teste-challenge
+cd test-challenge
 ```
 
 #### 2. Install dependencies

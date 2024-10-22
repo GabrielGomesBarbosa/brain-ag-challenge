@@ -1,59 +1,95 @@
-import { Prisma, RuralProducer } from '@prisma/client'
-
 import prisma from '../../services/prisma'
-import { IPagination } from '../../interfaces/IPagination'
+import { RuralProducer } from '../../models/RuralProducer'
 import { IRuralProducerRepository } from './IRuralProducerRepository'
 
 export class RuralProducerRepository implements IRuralProducerRepository {
-  async filter(
-    filterCriteria: Prisma.RuralProducerWhereInput,
-    skip?: number,
-    take?: number,
-  ): Promise<IPagination<RuralProducer>> {
-    const [items, totalItems] = await prisma.$transaction([
-      prisma.ruralProducer.findMany({
-        where: filterCriteria,
-        skip,
-        take,
-        include: {
-          ruralProducerCrop: {
-            include: {
-              crop: true,
-            },
-          },
-          city: true,
+  async create(data: {
+    name: string
+    cpfCnpj: string
+    farmName: string
+    totalArea: number
+    agriculturalArea: number
+    vegetationArea: number
+    cityId: string
+    crops?: string[]
+  }): Promise<RuralProducer> {
+    const createdProducer = await prisma.ruralProducer.create({
+      data: {
+        name: data.name,
+        cpfCnpj: data.cpfCnpj,
+        farmName: data.farmName,
+        totalArea: data.totalArea,
+        agriculturalArea: data.agriculturalArea,
+        vegetationArea: data.vegetationArea,
+        city: { connect: { id: data.cityId } },
+        ruralProducerCrop: {
+          connect: data.crops
+            ? data.crops.map((cropId) => ({ id: cropId }))
+            : undefined,
         },
-      }),
-      prisma.ruralProducer.count({
-        where: filterCriteria,
-      }),
-    ])
+      },
+    })
 
-    const totalPages = Math.ceil(totalItems / (take || totalItems))
-    const currentPage = Math.floor((skip || 0) / (take || totalItems)) + 1
-
-    return {
-      data: items,
-      currentPage,
-      totalPages,
-      hasMore: currentPage < totalPages,
-    }
+    return new RuralProducer(
+      createdProducer.id,
+      createdProducer.name,
+      createdProducer.cpfCnpj,
+      createdProducer.farmName,
+      createdProducer.totalArea,
+      createdProducer.agriculturalArea,
+      createdProducer.vegetationArea,
+      createdProducer.createdAt,
+      createdProducer.updatedAt,
+    )
   }
 
-  async create(data: Prisma.RuralProducerCreateInput): Promise<RuralProducer> {
-    return prisma.ruralProducer.create({
-      data,
+  async findById(id: string): Promise<RuralProducer | null> {
+    const producer = await prisma.ruralProducer.findUnique({
+      where: { id },
     })
+
+    if (!producer) return null
+
+    return new RuralProducer(
+      producer.id,
+      producer.name,
+      producer.cpfCnpj,
+      producer.farmName,
+      producer.totalArea,
+      producer.agriculturalArea,
+      producer.vegetationArea,
+      producer.createdAt,
+      producer.updatedAt,
+    )
   }
 
   async update(
     id: string,
-    data: Prisma.RuralProducerUpdateInput,
+    data: {
+      name?: string
+      cpfCnpj?: string
+      farmName?: string
+      totalArea?: number
+      agriculturalArea?: number
+      vegetationArea?: number
+    },
   ): Promise<RuralProducer> {
-    return prisma.ruralProducer.update({
+    const updatedProducer = await prisma.ruralProducer.update({
       where: { id },
       data,
     })
+
+    return new RuralProducer(
+      updatedProducer.id,
+      updatedProducer.name,
+      updatedProducer.cpfCnpj,
+      updatedProducer.farmName,
+      updatedProducer.totalArea,
+      updatedProducer.agriculturalArea,
+      updatedProducer.vegetationArea,
+      updatedProducer.createdAt,
+      updatedProducer.updatedAt,
+    )
   }
 
   async delete(id: string): Promise<void> {
@@ -62,30 +98,48 @@ export class RuralProducerRepository implements IRuralProducerRepository {
     })
   }
 
-  async findById(id: string): Promise<RuralProducer | null> {
-    return prisma.ruralProducer.findUnique({
-      where: { id },
-      include: {
-        ruralProducerCrop: {
-          include: {
-            crop: true,
-          },
-        },
-        city: true,
-      },
-    })
-  }
+  async filter(
+    where?: { name?: string },
+    page: number = 1,
+    size: number = 10,
+  ): Promise<{
+    data: RuralProducer[]
+    totalPages: number
+    hasMore: boolean
+    currentPage: number
+  }> {
+    const skip = (page - 1) * size
+    const totalProducers = await prisma.ruralProducer.count({ where })
 
-  async findAll(): Promise<RuralProducer[]> {
-    return prisma.ruralProducer.findMany({
-      include: {
-        ruralProducerCrop: {
-          include: {
-            crop: true,
-          },
-        },
-        city: true,
-      },
+    const producers = await prisma.ruralProducer.findMany({
+      where,
+      skip,
+      take: size,
     })
+
+    const producerModels = producers.map(
+      (producer) =>
+        new RuralProducer(
+          producer.id,
+          producer.name,
+          producer.cpfCnpj,
+          producer.farmName,
+          producer.totalArea,
+          producer.agriculturalArea,
+          producer.vegetationArea,
+          producer.createdAt,
+          producer.updatedAt,
+        ),
+    )
+
+    const totalPages = Math.ceil(totalProducers / size)
+    const hasMore = page < totalPages
+
+    return {
+      data: producerModels,
+      totalPages,
+      hasMore,
+      currentPage: page,
+    }
   }
 }

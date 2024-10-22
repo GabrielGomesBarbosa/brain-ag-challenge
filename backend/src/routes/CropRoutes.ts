@@ -31,9 +31,11 @@ cropRoutes.post('/', (req, res, next) => {
 cropRoutes.get('/:id', (req, res, next) => {
   cropController.read(req, res, next)
 })
+
 cropRoutes.put('/:id', (req, res, next) => {
   cropController.update(req, res, next)
 })
+
 cropRoutes.delete('/:id', (req, res, next) => {
   cropController.delete(req, res, next)
 })
