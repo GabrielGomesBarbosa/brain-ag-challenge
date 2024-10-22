@@ -12,6 +12,6 @@ export class DeleteCropUseCase {
       throw new Error('Crop ID is required.')
     }
 
-    this.cropRepository.delete(id)
+    await this.cropRepository.delete(id)
   }
 }

@@ -1,9 +1,7 @@
-import { Router, Request } from 'express'
+import { Router } from 'express'
 
-import {
-  CityController,
-  SearchCityQueryParams,
-} from '../controllers/CityController'
+import { asyncHandler } from '../utils/asyncHandler'
+import { CityController } from '../controllers/CityController'
 import { CityRepository } from '../repositories/city/CityRepository'
 import { SearchCityUseCase } from '../useCases/searchCity/SearchCityUseCase'
 
@@ -16,9 +14,7 @@ const cityController = new CityController(searchCityUseCase)
 
 cityRoutes.get(
   '/search',
-  (req: Request<{}, {}, {}, SearchCityQueryParams>, res) => {
-    cityController.searchCity(req, res)
-  },
+  asyncHandler(cityController.searchCity.bind(cityController)),
 )
 
 export { cityRoutes }

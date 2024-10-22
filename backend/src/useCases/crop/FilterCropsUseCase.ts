@@ -1,5 +1,4 @@
-import { Crop, Prisma } from '@prisma/client'
-
+import { Crop } from '../../models/Crop'
 import { IPagination } from '../../interfaces/IPagination'
 import { ICropRepository } from '../../repositories/crop/ICropRepository'
 
@@ -11,10 +10,10 @@ export class FilterCropsUseCase {
   }
 
   async execute(
-    filterCriteria: Prisma.CropWhereInput,
-    skip?: number,
-    take?: number,
+    filterCriteria: { name?: string; slug?: string },
+    page: number = 1,
+    size: number = 10,
   ): Promise<IPagination<Crop>> {
-    return this.cropRepository.filter(filterCriteria, skip, take)
+    return this.cropRepository.filter(filterCriteria, page, size)
   }
 }

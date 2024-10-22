@@ -1,37 +1,72 @@
-import { Crop, Prisma } from '@prisma/client'
-
+import { Crop } from '../../models/Crop'
 import prisma from '../../services/prisma'
 import { ICropRepository } from './ICropRepository'
+import { generateSlug } from '../../utils/generateSlug'
 import { IPagination } from '../../interfaces/IPagination'
 
 export class CropRepository implements ICropRepository {
-  async create(data: Prisma.CropCreateInput): Promise<Crop> {
-    return prisma.crop.create({
+  async create(data: { name: string; slug: string }): Promise<Crop> {
+    const createdCrop = await prisma.crop.create({
       data,
     })
+
+    return new Crop(
+      createdCrop.id,
+      createdCrop.name,
+      createdCrop.slug,
+      createdCrop.createdAt,
+      createdCrop.updatedAt,
+    )
   }
 
   async findById(id: string): Promise<Crop | null> {
-    return prisma.crop.findUnique({
+    const crop = await prisma.crop.findUnique({
       where: { id },
     })
+
+    if (!crop) {
+      return null
+    }
+
+    return new Crop(
+      crop.id,
+      crop.name,
+      crop.slug,
+      crop.createdAt,
+      crop.updatedAt,
+    )
   }
 
-  async update(id: string, data: Prisma.CropUpdateInput): Promise<Crop> {
-    return prisma.crop.update({
+  async update(
+    id: string,
+    data: { name?: string; slug?: string },
+  ): Promise<Crop> {
+    const updatedCrop = await prisma.crop.update({
       where: { id },
       data,
     })
+
+    return new Crop(
+      updatedCrop.id,
+      updatedCrop.name,
+      updatedCrop.slug,
+      updatedCrop.createdAt,
+      updatedCrop.updatedAt,
+    )
   }
 
   async delete(id: string): Promise<void> {
-    await prisma.crop.delete({
-      where: { id },
-    })
+    try {
+      await prisma.crop.delete({
+        where: { id },
+      })
+    } catch (error) {
+      throw error
+    }
   }
 
   async filter(
-    where?: Prisma.CropWhereInput,
+    where?: { name?: string },
     page: number = 1,
     size: number = 10,
   ): Promise<IPagination<Crop>> {
@@ -39,7 +74,12 @@ export class CropRepository implements ICropRepository {
     const totalCrops = await prisma.crop.count({ where })
 
     const crops = await prisma.crop.findMany({
-      where,
+      where: {
+        slug: {
+          contains: generateSlug(where.name),
+          mode: 'insensitive',
+        },
+      },
       skip,
       take: size,
     })
@@ -47,8 +87,13 @@ export class CropRepository implements ICropRepository {
     const totalPages = Math.ceil(totalCrops / size)
     const hasMore = page < totalPages
 
+    const cropModels = crops.map(
+      (crop) =>
+        new Crop(crop.id, crop.name, crop.slug, crop.createdAt, crop.updatedAt),
+    )
+
     return {
-      data: crops,
+      data: cropModels,
       totalPages,
       hasMore,
       currentPage: page,

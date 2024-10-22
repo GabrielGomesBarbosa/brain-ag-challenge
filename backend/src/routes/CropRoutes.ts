@@ -25,21 +25,21 @@ const cropController = new CropController(
   filterCropsUseCase,
 )
 
-cropRoutes.post('/', (req, res) => {
-  cropController.create(req, res)
+cropRoutes.post('/', (req, res, next) => {
+  cropController.create(req, res, next)
 })
-cropRoutes.get('/:id', (req, res) => {
-  cropController.read(req, res)
+cropRoutes.get('/:id', (req, res, next) => {
+  cropController.read(req, res, next)
 })
-cropRoutes.put('/:id', (req, res) => {
-  cropController.update(req, res)
+cropRoutes.put('/:id', (req, res, next) => {
+  cropController.update(req, res, next)
 })
-cropRoutes.delete('/:id', (req, res) => {
-  cropController.delete(req, res)
+cropRoutes.delete('/:id', (req, res, next) => {
+  cropController.delete(req, res, next)
 })
 
-cropRoutes.post('/filter', (req, res) => {
-  cropController.filter(req, res)
+cropRoutes.post('/filter', (req, res, next) => {
+  cropController.filter(req, res, next)
 })
 
 export { cropRoutes }

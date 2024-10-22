@@ -88,16 +88,12 @@ describe('SearchCityUseCase', () => {
       },
     ]
 
-    // Mock the repository to resolve with the mock cities
     mockCityRepository.findByName.mockResolvedValue(mockCities)
 
-    // Execute the use case
     const result = await searchCityUseCase.execute('Afonso')
 
-    // Ensure the repository is called with the correct parameters
     expect(mockCityRepository.findByName).toHaveBeenCalledWith('Afonso')
 
-    // Expected result based on SearchCityDTO mapping
     expect(result).toEqual([
       new SearchCityDTO('city-uuid-1', 'Afonso Cláudio - ES'),
       new SearchCityDTO('city-uuid-2', 'Água Doce do Norte - ES'),

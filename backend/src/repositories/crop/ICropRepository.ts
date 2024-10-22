@@ -1,15 +1,14 @@
-import { Crop, Prisma } from '@prisma/client'
-
+import { Crop } from '../../models/Crop'
 import { IPagination } from '../../interfaces/IPagination'
 
 export interface ICropRepository {
   filter(
-    where?: Prisma.CropWhereInput,
+    where?: { name?: string; slug?: string },
     page?: number,
     size?: number,
   ): Promise<IPagination<Crop>>
   findById(id: string): Promise<Crop | null>
-  create(data: Prisma.CropCreateInput): Promise<Crop>
-  update(id: string, data: Prisma.CropUpdateInput): Promise<Crop>
+  create(data: { name: string; slug: string }): Promise<Crop>
+  update(id: string, data: { name?: string; slug?: string }): Promise<Crop>
   delete(id: string): Promise<void>
 }

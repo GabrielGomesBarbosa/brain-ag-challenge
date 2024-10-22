@@ -1,31 +1,20 @@
-import { Request, Response } from 'express'
+import { NextFunction, Request, Response } from 'express'
 
 import { SearchCityUseCase } from '../useCases/searchCity/SearchCityUseCase'
-
-export interface SearchCityQueryParams {
-  name: string
-  fields?: string
-}
+import { cityFilterSchema } from '../validations/CityFilterValidation'
 
 export class CityController {
   constructor(private readonly searchCityUseCase: SearchCityUseCase) {}
 
-  async searchCity(
-    req: Request<{}, {}, {}, SearchCityQueryParams>,
-    res: Response,
-  ) {
-    const { name } = req.query
-
+  async searchCity(req: Request, res: Response, next: NextFunction) {
     try {
-      if (typeof name !== 'string') {
-        return res.status(400).json({ error: 'Invalid search term' })
-      }
+      const { name } = cityFilterSchema.parse(req.query)
 
       const cities = await this.searchCityUseCase.execute(name)
 
       return res.json(cities)
     } catch (error) {
-      return res.status(400).json({ error: error.message })
+      next(error)
     }
   }
 }

@@ -1,5 +1,4 @@
-import { Prisma, Crop } from '@prisma/client'
-
+import { Crop } from '../../models/Crop'
 import { generateSlug } from '../../utils/generateSlug'
 import { createCropSchema } from '../../validations/CropValidation'
 import { ICropRepository } from '../../repositories/crop/ICropRepository'
@@ -11,7 +10,7 @@ export class CreateCropUseCase {
     this.cropRepository = cropRepository
   }
 
-  async execute(data: Prisma.CropCreateInput): Promise<Crop> {
+  async execute(data: { name: string }): Promise<Crop> {
     try {
       const validatedData = createCropSchema.parse(data)
       const slug = generateSlug(validatedData.name)

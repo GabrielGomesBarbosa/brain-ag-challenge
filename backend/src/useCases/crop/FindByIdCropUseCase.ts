@@ -1,5 +1,4 @@
-import { Crop } from '@prisma/client'
-
+import { Crop } from '../../models/Crop'
 import { ICropRepository } from '../../repositories/crop/ICropRepository'
 
 export class FindByIdCropUseCase {

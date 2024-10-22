@@ -21,7 +21,6 @@ export class CityRepository implements ICityRepository {
       },
     })
 
-    // Map Prisma data to custom City and State models
     return cities.map((city) => {
       const state = new State(
         city.state.id,

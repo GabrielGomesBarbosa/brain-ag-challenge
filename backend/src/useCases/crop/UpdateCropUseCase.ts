@@ -1,5 +1,4 @@
-import { Prisma, Crop } from '@prisma/client'
-
+import { Crop } from '../../models/Crop'
 import { generateSlug } from '../../utils/generateSlug'
 import { updateCropSchema } from '../../validations/CropValidation'
 import { ICropRepository } from '../../repositories/crop/ICropRepository'
@@ -11,14 +10,8 @@ export class UpdateCropUseCase {
     this.cropRepository = cropRepository
   }
 
-  async execute(id: string, data: Prisma.CropUpdateInput): Promise<Crop> {
+  async execute(id: string, data: { name?: string }): Promise<Crop> {
     try {
-      const existingCrop = await this.cropRepository.findById(id)
-
-      if (!existingCrop) {
-        throw new Error('Record not found')
-      }
-
       const validatedData = updateCropSchema.parse(data)
 
       const slug = generateSlug(validatedData.name)

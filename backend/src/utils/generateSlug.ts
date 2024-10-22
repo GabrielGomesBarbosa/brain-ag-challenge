@@ -1,4 +1,8 @@
-export function generateSlug(str: string) {
+export function generateSlug(str?: string) {
+  if (!str) {
+    return ''
+  }
+
   return str
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
