@@ -11,16 +11,13 @@ export class CreateCropUseCase {
   }
 
   async execute(data: { name: string }): Promise<Crop> {
-    try {
-      const validatedData = createCropSchema.parse(data)
-      const slug = generateSlug(validatedData.name)
+    const validatedData = createCropSchema.parse(data)
 
-      return await this.cropRepository.create({
-        name: validatedData.name,
-        slug,
-      })
-    } catch (error) {
-      throw error
-    }
+    const slug = generateSlug(validatedData.name)
+
+    return await this.cropRepository.create({
+      name: validatedData.name,
+      slug,
+    })
   }
 }

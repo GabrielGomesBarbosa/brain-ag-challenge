@@ -8,8 +8,8 @@ export class FindByIdCropUseCase {
     this.cropRepository = cropRepository
   }
 
-  async execute(id: string): Promise<Crop | null> {
-    if (!id) {
+  async execute(id?: string): Promise<Crop | null> {
+    if (!id || id.trim() === '') {
       throw new Error('Crop ID is required.')
     }
 

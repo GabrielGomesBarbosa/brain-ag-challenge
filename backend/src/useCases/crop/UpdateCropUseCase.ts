@@ -11,17 +11,13 @@ export class UpdateCropUseCase {
   }
 
   async execute(id: string, data: { name?: string }): Promise<Crop> {
-    try {
-      const validatedData = updateCropSchema.parse(data)
+    const validatedData = updateCropSchema.parse(data)
 
-      const slug = generateSlug(validatedData.name)
+    const slug = generateSlug(validatedData.name)
 
-      return await this.cropRepository.update(id, {
-        ...validatedData,
-        slug,
-      })
-    } catch (error) {
-      throw error
-    }
+    return await this.cropRepository.update(id, {
+      ...validatedData,
+      slug,
+    })
   }
 }

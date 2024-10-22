@@ -8,7 +8,7 @@ export class DeleteCropUseCase {
   }
 
   async execute(id: string): Promise<void> {
-    if (!id) {
+    if (!id || id.trim() === '') {
       throw new Error('Crop ID is required.')
     }
 
