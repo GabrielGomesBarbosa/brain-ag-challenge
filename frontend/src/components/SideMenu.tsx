@@ -5,7 +5,6 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  IconButton,
   Tooltip,
   Link,
   Box,
@@ -15,7 +14,6 @@ import {
 } from '@mui/material'
 import {
   Home,
-  Menu,
   Settings,
   Info,
   ExpandLess,
@@ -24,11 +22,9 @@ import {
 import { styled } from '@mui/system'
 import Logo from '../assets/logo.png'
 
-// Define the max width of the expanded sidebar
 const drawerWidth = 240
 const collapsedWidth = 80
 
-// Styled drawer for custom collapsible behavior
 const CustomDrawer = styled(Drawer, {
   shouldForwardProp: prop => prop !== 'collapsed'
 })<{ collapsed: boolean }>(({ collapsed }) => ({
@@ -46,9 +42,9 @@ const Sidebar: React.FC = () => {
   const [openSettings, setOpenSettings] = useState(false)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 
-  const handleToggleCollapse = () => {
-    setCollapsed(!collapsed)
-  }
+  // const handleToggleCollapse = () => {
+  //   setCollapsed(!collapsed)
+  // }
 
   const handleSettingsClick = () => {
     if (!collapsed) {
@@ -189,18 +185,6 @@ const Sidebar: React.FC = () => {
             </ListItem>
           </Tooltip>
         </List>
-
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: collapsed ? 'center' : 'flex-end',
-            padding: '10px'
-          }}
-        >
-          <IconButton onClick={handleToggleCollapse}>
-            <Menu />
-          </IconButton>
-        </Box>
       </CustomDrawer>
     </Box>
   )
