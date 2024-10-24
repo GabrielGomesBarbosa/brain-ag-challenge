@@ -20,6 +20,8 @@ import {
   ExpandMore
 } from '@mui/icons-material'
 import { styled } from '@mui/system'
+import { useSelector } from 'react-redux'
+
 import Logo from '../assets/logo.png'
 
 const drawerWidth = 240
@@ -38,22 +40,19 @@ const CustomDrawer = styled(Drawer, {
 }))
 
 const Sidebar: React.FC = () => {
-  const [collapsed, setCollapsed] = useState(false)
+  const { isSideBarCollapsed } = useSelector(state => state?.layout)
+
   const [openSettings, setOpenSettings] = useState(false)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 
-  // const handleToggleCollapse = () => {
-  //   setCollapsed(!collapsed)
-  // }
-
   const handleSettingsClick = () => {
-    if (!collapsed) {
+    if (!isSideBarCollapsed) {
       setOpenSettings(!openSettings)
     }
   }
 
   const handleSettingsHover = (event: React.MouseEvent<HTMLElement>) => {
-    if (collapsed) {
+    if (isSideBarCollapsed) {
       setAnchorEl(event.currentTarget)
     }
   }
@@ -66,13 +65,13 @@ const Sidebar: React.FC = () => {
 
   return (
     <Box display="flex">
-      <CustomDrawer variant="permanent" collapsed={collapsed}>
+      <CustomDrawer variant="permanent" collapsed={isSideBarCollapsed}>
         <Box
           sx={{
             display: 'flex',
-            justifyContent: collapsed ? 'center' : 'flex-start',
+            justifyContent: isSideBarCollapsed ? 'center' : 'flex-start',
             alignItems: 'center',
-            p: collapsed ? '10px 0' : '10px 16px',
+            p: isSideBarCollapsed ? '10px 0' : '10px 16px',
             bgcolor: 'primary.main',
             color: 'white',
             height: '64px',
@@ -88,7 +87,7 @@ const Sidebar: React.FC = () => {
             }}
           />
 
-          {!collapsed && (
+          {!isSideBarCollapsed && (
             <Typography variant="h5" fontWeight={600}>
               Farmer
             </Typography>
@@ -96,18 +95,21 @@ const Sidebar: React.FC = () => {
         </Box>
 
         <List>
-          <Tooltip title={!collapsed ? '' : 'Home'} placement="right">
+          <Tooltip title={!isSideBarCollapsed ? '' : 'Home'} placement="right">
             <ListItem component={Link}>
               <ListItemIcon>
                 <Home />
               </ListItemIcon>
-              <Collapse in={!collapsed} timeout="auto" unmountOnExit>
+              <Collapse in={!isSideBarCollapsed} timeout="auto" unmountOnExit>
                 <ListItemText primary="Home" />
               </Collapse>
             </ListItem>
           </Tooltip>
 
-          <Tooltip title={!collapsed ? '' : 'Settings'} placement="right">
+          <Tooltip
+            title={!isSideBarCollapsed ? '' : 'Settings'}
+            placement="right"
+          >
             <ListItem
               onClick={handleSettingsClick}
               onMouseEnter={handleSettingsHover}
@@ -116,15 +118,16 @@ const Sidebar: React.FC = () => {
               <ListItemIcon>
                 <Settings />
               </ListItemIcon>
-              <Collapse in={!collapsed} timeout="auto" unmountOnExit>
+              <Collapse in={!isSideBarCollapsed} timeout="auto" unmountOnExit>
                 <ListItemText primary="Settings" />
               </Collapse>
-              {!collapsed && (openSettings ? <ExpandLess /> : <ExpandMore />)}
+              {!isSideBarCollapsed &&
+                (openSettings ? <ExpandLess /> : <ExpandMore />)}
             </ListItem>
           </Tooltip>
 
           <Collapse
-            in={openSettings && !collapsed}
+            in={openSettings && !isSideBarCollapsed}
             timeout="auto"
             unmountOnExit
           >
@@ -174,12 +177,12 @@ const Sidebar: React.FC = () => {
             </List>
           </Popover>
 
-          <Tooltip title={!collapsed ? '' : 'About'} placement="right">
+          <Tooltip title={!isSideBarCollapsed ? '' : 'About'} placement="right">
             <ListItem component={Link}>
               <ListItemIcon>
                 <Info />
               </ListItemIcon>
-              <Collapse in={!collapsed} timeout="auto" unmountOnExit>
+              <Collapse in={!isSideBarCollapsed} timeout="auto" unmountOnExit>
                 <ListItemText primary="About" />
               </Collapse>
             </ListItem>
