@@ -4,7 +4,7 @@ import { Outlet } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
 import Header from './Header'
-import Sidebar from './SideMenu'
+import Sidebar from './SideMenu/SideMenu'
 
 export default function PageContainer() {
   const { isSideBarCollapsed } = useSelector(state => state?.layout)
